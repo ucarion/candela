@@ -2,7 +2,7 @@ module Candela
   module ControllerAdditions
     def self.authorize_resource(controller_class, opts)
       controller_name = controller_class.controller_name
-      instance_name = controller_name.singularize 
+      instance_name = controller_name.singularize
 
       controller_class.prepend_before_filter do |controller|
         params = controller.params
