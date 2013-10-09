@@ -24,4 +24,18 @@ class AuthorizeResourceTest < ActionController::TestCase
 
     assert_not_nil assigns(:user)
   end
+
+  test "creating a new model on create" do
+    post(:create, user: { name: "John", password: "secret" })
+
+    assert_response :found
+
+    assert User.where(name: "John").present?
+  end
+
+  test "using params for create" do
+    assert_raises ActionController::ParameterMissing do
+      post(:create, not_user: { name: "John", password: "secret" })
+    end
+  end
 end
