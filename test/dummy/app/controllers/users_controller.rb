@@ -41,6 +41,14 @@ class UsersController < ApplicationController
     redirect_to users_url, notice: 'User was successfully destroyed.'
   end
 
+  # GET /users/1/upcasename
+  def upcasename
+    @user.name = @user.name.upcase
+    @user.save
+
+    redirect_to @user
+  end
+
   private
 
     # Only allow a trusted parameter "white list" through.

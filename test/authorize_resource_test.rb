@@ -54,4 +54,12 @@ class AuthorizeResourceTest < ActionController::TestCase
 
     assert_not_nil assigns(:user)
   end
+
+  test "loading from params[:id] on non-CRUD actions" do
+    get(:upcasename, id: 1)
+
+    assert_not_nil assigns(:user)
+
+    assert_equal User.find(1).name, "FOO"
+  end
 end
