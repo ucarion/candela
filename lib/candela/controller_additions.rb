@@ -11,6 +11,9 @@ module Candela
         case params[:action].to_sym
         when :new
           controller.instance_variable_set("@#{instance_name}", model.new)
+        when :create
+          created_instance = model.new(controller.send(opts[:params]))
+          controller.instance_variable_set("@#{instance_name}", created_instance)
         when :show, :edit
           controller.instance_variable_set("@#{instance_name}", model.find(params[:id]))
         end
