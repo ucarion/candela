@@ -38,4 +38,20 @@ class AuthorizeResourceTest < ActionController::TestCase
       post(:create, not_user: { name: "John", password: "secret" })
     end
   end
+
+  test "loading from params[:id] on update" do
+    patch(:update, id: 1, user: { name: "oof", password: "rab" })
+
+    assert_not_nil assigns(:user)
+
+    assert_equal User.find(1).name, "oof"
+  end
+
+  test "loading from params[:id] on destroy" do
+    to_destroy = User.create(name: "delete", password: "me")
+
+    delete(:destroy, id: to_destroy.id)
+
+    assert_not_nil assigns(:user)
+  end
 end

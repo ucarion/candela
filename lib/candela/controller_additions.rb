@@ -14,7 +14,7 @@ module Candela
         when :create
           created_instance = model.new(controller.send(opts[:params]))
           controller.instance_variable_set("@#{instance_name}", created_instance)
-        when :show, :edit
+        when :show, :edit, :update, :destroy
           controller.instance_variable_set("@#{instance_name}", model.find(params[:id]))
         end
       end
