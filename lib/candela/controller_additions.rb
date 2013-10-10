@@ -10,7 +10,16 @@ module Candela
 
         case params[:action].to_sym
         when :new
-          controller.instance_variable_set("@#{instance_name}", model.new)
+          if opts[:parent]
+            parent_class = opts[:parent].to_s.classify.constantize
+            parent_id = params["#{opts[:parent]}_id"]
+
+            instance = parent_class.find(parent_id).send(controller_name).new
+
+            controller.instance_variable_set("@#{instance_name}", instance)
+          else
+            controller.instance_variable_set("@#{instance_name}", model.new)
+          end
         when :create
           created_instance = model.new(controller.send(opts[:params]))
           controller.instance_variable_set("@#{instance_name}", created_instance)
