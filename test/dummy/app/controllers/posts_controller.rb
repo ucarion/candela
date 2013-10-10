@@ -1,4 +1,6 @@
 class PostsController < ApplicationController
+  authorize_resource parent: :user, params: :post_params
+
   # GET /users/1/posts
   def index
   end
