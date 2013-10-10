@@ -1,4 +1,6 @@
-<%= form_for(@post) do |f| %>
+<%= form_for(
+  # A disgusting hack to use new/edit in same form.
+  params[:action] == "new" ? [@post.user, @post] : @post) do |f| %>
   <% if @post.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
