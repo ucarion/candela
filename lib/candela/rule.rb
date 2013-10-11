@@ -14,11 +14,15 @@ module Candela
     end
 
     def relevant?(action, object)
-      action == @action && if @opts[:collection]
+      action == @action && if on_collection?
         object == @model
       else
         object.class == @model
       end
+    end
+
+    def on_collection?
+      @opts[:collection]
     end
   end
 end
