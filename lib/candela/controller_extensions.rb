@@ -45,6 +45,9 @@ module Candela
       end
     end
 
+    # Loads the ability of the current user. This method assumes that you have
+    # named your own ability class "Ability", and that you have defined a method
+    # called `current_user`.
     def current_ability
       @current_ability ||= ::Ability.new(current_user)
     end
