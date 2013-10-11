@@ -7,7 +7,7 @@ module Candela
       controller_class.prepend_before_filter do |controller|
         model = params[:controller].classify.constantize
 
-        case params[:action].to_sym
+        target = case params[:action].to_sym
         when :new
           if opts[:parent]
             parent_class = opts[:parent].to_s.classify.constantize
@@ -25,6 +25,8 @@ module Candela
         else
           instance_variable_set("@#{instance_name}", model.find(params[:id]))
         end
+
+        raise AccessDeniedError unless current_ability.can?(params[:action].to_sym, target)
       end
     end
   end

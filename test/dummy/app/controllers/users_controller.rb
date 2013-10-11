@@ -49,6 +49,10 @@ class UsersController < ApplicationController
     redirect_to @user
   end
 
+  def unpermitted
+    
+  end
+
   private
 
     # Only allow a trusted parameter "white list" through.

@@ -6,6 +6,7 @@ Dummy::Application.routes.draw do
     resources :users do
       member do
         get :upcasename
+        get :unpermitted
       end
 
       resources :posts

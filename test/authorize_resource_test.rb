@@ -4,7 +4,8 @@ class AuthorizeResourceTest < ActionController::TestCase
   tests UsersController
 
   def setup
-    User.create(name: "foo", password: "bar")
+    @user = User.create(name: "foo", password: "bar")
+    @controller.current_user = @user
   end
 
   test "loading from params[:id] on show" do
@@ -61,5 +62,18 @@ class AuthorizeResourceTest < ActionController::TestCase
     assert_not_nil assigns(:user)
 
     assert_equal User.find(1).name, "FOO"
+  end
+
+  test "not raising exceptions on permitted actions" do
+    assert_nothing_raised do
+      # Dummy app has a pre-existing Ability class that allows anyone to read users.
+      get(:show, id: @user.id)
+    end
+  end
+
+  test "raising exceptions on non-permitted actions" do
+    assert_raises Candela::AccessDeniedError do
+      get(:unpermitted, id: @user.id)
+    end
   end
 end
