@@ -20,6 +20,8 @@ module Candela
 
     def authorize_resource
       loaded_resource = case action
+      when :index
+        load_resource_for_action_index
       when :new
         load_resource_for_action_new
       when :create
@@ -34,13 +36,36 @@ module Candela
     private
 
     def check_can_access_resource(resource)
-      unless @controller.current_ability.can?(action, resource)
+      unless (action_is_on_collection? ?
+          can_access_collection_action? : can_access_member_action?(resource))
         raise AccessDeniedError
       end
     end
 
+    def action_is_on_collection?
+      action == :index
+    end
+
+    def can_access_collection_action?
+      current_ability.can?(action, model_class)
+    end
+
+    def can_access_member_action?(resource)
+      current_ability.can?(action, resource)
+    end
+
     def action
       @params[:action].to_sym
+    end
+
+    def load_resource_for_action_index
+      accessible_models = []
+
+      model_class.find_each do |model|
+        accessible_models << model if current_ability.can?(:show, model)
+      end
+
+      set_resource_instance_var(accessible_models, true)
     end
 
     def load_resource_for_action_new
@@ -60,9 +85,13 @@ module Candela
       set_resource_instance_var(model_class.find(@params[:id]))
     end
 
-    def set_resource_instance_var(value)
-      ivar_name = "@#{singular_model_name}"
+    def set_resource_instance_var(value, plural = false)
+      ivar_name = "@#{plural ? plural_model_name : singular_model_name}"
       @controller.instance_variable_set(ivar_name, value)
+    end
+
+    def current_ability
+      @controller.current_ability
     end
 
     def parent_model

@@ -64,6 +64,16 @@ class AuthorizeResourceTest < ActionController::TestCase
     assert_equal User.find(1).name, "FOO"
   end
 
+  test "loading readable instances on #index" do
+    get(:index)
+
+    assert_not_nil assigns(:user)
+
+    User.each do |user|
+      assert assigns(:user).contains(user)
+    end
+  end
+
   test "not raising exceptions on permitted actions" do
     assert_nothing_raised do
       # Dummy app has a pre-existing Ability class that allows anyone to read users.

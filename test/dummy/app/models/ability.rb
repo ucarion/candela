@@ -9,6 +9,7 @@ class Ability
     can :create, User
     can :destroy, User
     can :upcasename, User
+    can :index, User, collection: true
 
     can :show, Post
     can :new, Post
