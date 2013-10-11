@@ -9,6 +9,10 @@ Dummy::Application.routes.draw do
         get :unpermitted
       end
 
+      collection do
+        get :listall
+      end
+
       resources :posts
     end
   end

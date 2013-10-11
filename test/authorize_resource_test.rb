@@ -74,6 +74,13 @@ class AuthorizeResourceTest < ActionController::TestCase
     end
   end
 
+  test "not loading anything on non-index collection actions" do
+    get(:listall)
+
+    assert_nil assigns(:user)
+    assert_nil assigns(:users)
+  end
+
   test "not raising exceptions on permitted actions" do
     assert_nothing_raised do
       # Dummy app has a pre-existing Ability class that allows anyone to read users.

@@ -27,7 +27,7 @@ module Candela
       when :create
         load_resource_for_action_create
       else
-        load_resource_from_id
+        load_resource_from_id unless action_is_on_collection?
       end
 
       check_can_access_resource(loaded_resource)
@@ -43,7 +43,13 @@ module Candela
     end
 
     def action_is_on_collection?
-      action == :index
+      # If params[:id] is nil, then this action isn't working on any individual
+      # model instance; therefore, this action is working on a collection.
+      # 
+      # The #new and #create actions are exceptions, since they're technically
+      # collection actions, but create a model instance we can work with for
+      # authentication purposes and so we consider them to be member actions.
+      [:new, :create].exclude?(action) && @params[:id].nil?
     end
 
     def can_access_collection_action?

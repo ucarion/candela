@@ -53,6 +53,11 @@ class UsersController < ApplicationController
     
   end
 
+  # GET /users/listall
+  def listall
+    redirect_to '/'
+  end
+
   private
 
     # Only allow a trusted parameter "white list" through.

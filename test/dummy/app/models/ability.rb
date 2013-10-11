@@ -10,6 +10,7 @@ class Ability
     can :destroy, User
     can :upcasename, User
     can :index, User, collection: true
+    can :listall, User, collection: true
 
     can :show, Post do |post|
       post.user == user
