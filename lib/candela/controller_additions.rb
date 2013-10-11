@@ -13,7 +13,9 @@ module Candela
     def initialize(controller, opts)
       @controller = controller
       @params = @controller.params
-      @opts = opts
+      @opts = {
+        params: default_params_names
+      }.merge(opts)
     end
 
     def authorize_resource
@@ -69,6 +71,10 @@ module Candela
 
     def parent_id
       @params[@opts[:parent].to_s.foreign_key]
+    end
+
+    def default_params_names
+      "#{singular_model_name}_params"
     end
 
     # TODO: A better name for this?

@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  authorize_resource params: :user_params
+  authorize_resource
 
   # GET /users
   def index
