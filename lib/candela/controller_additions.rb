@@ -16,7 +16,6 @@ module Candela
       @opts = opts
     end
 
-    # TODO: handle #update properly.
     def authorize_resource
       loaded_resource = case action
       when :new
