@@ -1,7 +1,7 @@
 module Candela
   class Rule
-    def initialize(action, model, block)
-      @action, @model, @block = action, model, block
+    def initialize(action, model, opts, block)
+      @action, @model, @opts, @block = action, model, opts, block
     end
 
     # TODO: Find a better name for this method.
@@ -14,7 +14,11 @@ module Candela
     end
 
     def relevant?(action, object)
-      action == @action && object.class == @model
+      action == @action && if @opts[:collection]
+        object == @model
+      else
+        object.class == @model
+      end
     end
   end
 end

@@ -63,4 +63,10 @@ class AbilityTest < ActiveSupport::TestCase
 
     assert_not @ability.can? :read, @user
   end
+
+  test "can collection: true lets you call can? on a model class" do
+    @ability.can :index, User, collection: true
+
+    assert @ability.can? :index, User
+  end
 end
