@@ -5,7 +5,6 @@ module Candela
       instance_name = controller_name.singularize
 
       controller_class.prepend_before_filter do |controller|
-        params = controller.params
         model = params[:controller].classify.constantize
 
         case params[:action].to_sym
@@ -16,15 +15,15 @@ module Candela
 
             instance = parent_class.find(parent_id).send(controller_name).new
 
-            controller.instance_variable_set("@#{instance_name}", instance)
+            instance_variable_set("@#{instance_name}", instance)
           else
-            controller.instance_variable_set("@#{instance_name}", model.new)
+            instance_variable_set("@#{instance_name}", model.new)
           end
         when :create
-          created_instance = model.new(controller.send(opts[:params]))
-          controller.instance_variable_set("@#{instance_name}", created_instance)
+          created_instance = model.new(send(opts[:params]))
+          instance_variable_set("@#{instance_name}", created_instance)
         else
-          controller.instance_variable_set("@#{instance_name}", model.find(params[:id]))
+          instance_variable_set("@#{instance_name}", model.find(params[:id]))
         end
       end
     end
