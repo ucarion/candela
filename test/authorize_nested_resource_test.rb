@@ -6,6 +6,8 @@ class AuthorizeNestedResourceTest < ActionController::TestCase
   def setup
     @user = User.create(name: "foo", password: "bar")
     @post = @user.posts.create(content: "Foo bar")
+
+    @controller.current_user = @user
   end
 
   test "load through params[:id] for #show" do

@@ -67,10 +67,10 @@ class AuthorizeResourceTest < ActionController::TestCase
   test "loading readable instances on #index" do
     get(:index)
 
-    assert_not_nil assigns(:user)
+    assert_not_nil assigns(:users)
 
-    User.each do |user|
-      assert assigns(:user).contains(user)
+    User.all.each do |user|
+      assert assigns(:users).include?(user)
     end
   end
 

@@ -11,7 +11,9 @@ class Ability
     can :upcasename, User
     can :index, User, collection: true
 
-    can :show, Post
+    can :show, Post do |post|
+      post.user == user
+    end
     can :new, Post
   end
 end
