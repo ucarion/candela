@@ -10,7 +10,7 @@ module Candela
       # this usage of the authorize_resource method:
       # 
       #   class ArticlesController < ApplicationController
-      #     authorize_resource, params: :article_params
+      #     authorize_resource
       #   end
       # 
       # Then, the @article variable will be populated as:
@@ -24,7 +24,7 @@ module Candela
       # class as the value of `parent`:
       # 
       #   class CommentsController < ApplicationController
-      #     authorize_resource, params: :article_params, parent: :article
+      #     authorize_resource parent: :article
       #   end
       # 
       # Resource loading will remain largely unchanged, but loading for the #new
@@ -34,7 +34,8 @@ module Candela
       # 
       # Options:
       # [:+params+]
-      #   The method to call on the controller to create / update a model.
+      #   The method to call on the controller to create a model. By default, this
+      #   will be the singular name of the model with "_params" concatenated.
       # [:+parent+]
       #   If this model is a nested one, then set this value to be the singular name
       #   of the parent model.
