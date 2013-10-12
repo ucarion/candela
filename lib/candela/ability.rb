@@ -46,7 +46,7 @@ module Candela
     # accessed. As long as the block returns a truthy value, the permission to
     # perform the described action is granted.
     def can(action, model, opts = {}, &block)
-      cans << Rule.new(action, model, opts, block)
+      add_rule(cans, action, model, opts, block)
     end
 
     # Explicitly disallows an action to be performed by this Ability. A #cannot
@@ -64,7 +64,7 @@ module Candela
     # Much like #can, this method can accept a block. See the documentation for
     # #can to get an idea of how that works.
     def cannot(action, model, opts = {}, &block)
-      cannots << Rule.new(action, model, opts, block)
+      add_rule(cannots, action, model, opts, block)
     end
 
     DEFAULT_ALIASES = {
@@ -78,6 +78,16 @@ module Candela
     end
 
     private
+
+    def add_rule(rule_array, action, model, opts, block)
+      if action.is_a?(Array)
+        action.each do |passed_action|
+          rule_array << Rule.new(passed_action, model, opts, block)
+        end
+      else
+        rule_array << Rule.new(action, model, opts, block)
+      end
+    end
 
     def cans
       @cans ||= []

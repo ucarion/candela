@@ -93,4 +93,13 @@ class AbilityTest < ActiveSupport::TestCase
 
     assert @ability.can? :show, @user
   end
+
+  test "#can accepts array of actions to permit" do
+    @ability.can [ :read, :update, :destroy ], User
+
+    assert @ability.can? :read, @user
+    assert @ability.can? :edit, @user
+    assert @ability.can? :update, @user
+    assert @ability.can? :destroy, @user
+  end
 end
