@@ -67,16 +67,6 @@ module Candela
       add_rule(cannots, action, model, opts, block)
     end
 
-    DEFAULT_ALIASES = {
-      edit: :update,
-      new: :create,
-      show: :read
-    }
-
-    def aliases
-      @aliases ||= DEFAULT_ALIASES
-    end
-
     private
 
     def add_rule(rule_array, action, model, opts, block)
@@ -95,6 +85,16 @@ module Candela
 
     def cannots
       @cannots ||= []
+    end
+
+    DEFAULT_ALIASES = {
+      edit: :update,
+      new: :create,
+      show: :read
+    }
+
+    def aliases
+      @aliases ||= DEFAULT_ALIASES
     end
   end
 end
