@@ -69,4 +69,28 @@ class AbilityTest < ActiveSupport::TestCase
 
     assert @ability.can? :index, User
   end
+
+  test "can :update automatically provides can? :edit" do
+    @ability.can :update, User
+
+    assert @ability.can? :edit, @user
+  end
+
+  test "cannot :update automatically disallows can? :edit" do
+    @ability.cannot :update, User
+
+    assert_not @ability.can? :edit, @user
+  end
+
+  test "can :create automatically provides can? :new" do
+    @ability.can :create, User
+
+    assert @ability.can? :new, @user
+  end
+
+  test "can :read automatically provides can? :show" do
+    @ability.can :read, User
+
+    assert @ability.can? :show, @user
+  end
 end

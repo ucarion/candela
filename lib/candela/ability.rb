@@ -9,14 +9,14 @@ module Candela
     def can?(action, object)
       # First, check if any cannots negate this permission.
       cannots.each do |cannot|
-        if cannot.relevant?(action, object)
+        if cannot.relevant?(action, object, aliases[action])
           return false if cannot.applies?(action, object)
         end
       end
 
       # Next, see if any cans provide this permission
       cans.each do |can|
-        if can.relevant?(action, object)
+        if can.relevant?(action, object, aliases[action])
           return true if can.applies?(action, object)
         end
       end
@@ -65,6 +65,16 @@ module Candela
     # #can to get an idea of how that works.
     def cannot(action, model, opts = {}, &block)
       cannots << Rule.new(action, model, opts, block)
+    end
+
+    DEFAULT_ALIASES = {
+      edit: :update,
+      new: :create,
+      show: :read
+    }
+
+    def aliases
+      @aliases ||= DEFAULT_ALIASES
     end
 
     private

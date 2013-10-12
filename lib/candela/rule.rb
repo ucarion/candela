@@ -13,8 +13,8 @@ module Candela
       end
     end
 
-    def relevant?(action, object)
-      action == @action && if on_collection?
+    def relevant?(action, object, action_alias)
+      [action, action_alias].include?(@action) && if on_collection?
         object == @model
       else
         object.class == @model
