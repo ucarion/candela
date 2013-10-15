@@ -90,7 +90,8 @@ class AbilityTest < ActiveSupport::TestCase
   test "can :read automatically provides can? :show" do
     @ability.can :read, User
 
-    assert @ability.can? :show, @user
+    assert @ability.can? :read, @user # how the user will test it
+    assert @ability.can? :show, @user # show Candela will test it
   end
 
   test "#can accepts array of actions to permit" do
@@ -100,5 +101,23 @@ class AbilityTest < ActiveSupport::TestCase
     assert @ability.can? :edit, @user
     assert @ability.can? :update, @user
     assert @ability.can? :destroy, @user
+  end
+
+  test "#alias_action will allow one action to be aliased for another" do
+    @ability.alias_action :destroy, to: :delete
+    @ability.can :delete, User
+
+    assert @ability.can? :delete, @user
+    assert @ability.can? :destroy, @user
+  end
+
+  test "#alias_action will allow multiple actions to be aliased as one action" do
+    @ability.alias_action :create, :read, :update, :destroy, to: :crud
+    @ability.can :crud, User
+    
+    assert @ability.can? :crud, @user
+    %i(create read update destroy).each do |action|
+      assert @ability.can? action, @user
+    end
   end
 end

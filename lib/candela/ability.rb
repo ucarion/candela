@@ -9,14 +9,14 @@ module Candela
     def can?(action, object)
       # First, check if any cannots negate this permission.
       cannots.each do |cannot|
-        if cannot.relevant?(action, object, aliases[action])
+        if cannot.relevant?(action, object)
           return false if cannot.applies?(action, object)
         end
       end
 
       # Next, see if any cans provide this permission
       cans.each do |can|
-        if can.relevant?(action, object, aliases[action])
+        if can.relevant?(action, object)
           return true if can.applies?(action, object)
         end
       end
@@ -67,15 +67,29 @@ module Candela
       add_rule(cannots, action, model, opts, block)
     end
 
+    def alias_action(*old_actions, new_action)
+      aliases[new_action[:to]] = old_actions
+    end
+
     private
 
     def add_rule(rule_array, action, model, opts, block)
       if action.is_a?(Array)
         action.each do |passed_action|
-          rule_array << Rule.new(passed_action, model, opts, block)
+          add_rule(rule_array, passed_action, model, opts, block)
         end
-      else
-        rule_array << Rule.new(action, model, opts, block)
+      end
+
+      add_rule_recursively(rule_array, action, model, opts, block)
+    end
+
+    def add_rule_recursively(rule_array, action, model, opts, block)
+      rule_array << Rule.new(action, model, opts, block)
+
+      if aliases[action]
+        aliases[action].each do |aliased_action|
+          add_rule_recursively(rule_array, aliased_action, model, opts, block)
+        end
       end
     end
 
