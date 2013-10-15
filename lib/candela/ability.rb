@@ -87,14 +87,16 @@ module Candela
       @cannots ||= []
     end
 
-    DEFAULT_ALIASES = {
-      edit: :update,
-      new: :create,
-      show: :read
-    }
-
     def aliases
-      @aliases ||= DEFAULT_ALIASES
+      @aliases ||= default_aliases
+    end
+
+    def default_aliases
+      {
+        read: [ :show ],
+        create: [ :new ],
+        update: [ :edit ]
+      }
     end
   end
 end
