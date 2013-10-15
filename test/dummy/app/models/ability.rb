@@ -1,6 +1,4 @@
-class Ability
-  include Candela::Ability
-
+class Ability < Candela::Ability
   def initialize(user)
     can :show, User
     can :edit, User

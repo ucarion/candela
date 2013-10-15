@@ -4,8 +4,7 @@ class AbilityTest < ActiveSupport::TestCase
   def setup
     @user = User.new(name: "John", password: "password")
 
-    @ability = Object.new
-    @ability.extend(Candela::Ability)
+    @ability = Candela::Ability.new
   end
 
   test "abilities have #can, #can? methods defined" do

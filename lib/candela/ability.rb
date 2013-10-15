@@ -1,5 +1,5 @@
 module Candela
-  module Ability
+  class Ability
     # Checks if this ability is allowed to perform a given action on some object.
     #
     # If any relevant #cannot call apply here, then this method will return false.
