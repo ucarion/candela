@@ -37,7 +37,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert @ability.can? :read, @user
   end
 
-  test "abilities return false if can block returns true" do
+  test "abilities return false if can block returns false" do
     @ability.can :read, User do
       false
     end
