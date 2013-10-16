@@ -2,6 +2,10 @@ module Candela
   module ControllerExtensions
     extend ActiveSupport::Concern
 
+    included do
+      helper_method :can?, :current_ability
+    end
+
     module ClassMethods
       # Creates a before_filter which will load a resource into an instance
       # variable, then make sure that loaded variable can be accessed.
@@ -43,6 +47,10 @@ module Candela
       def authorize_resource(opts = {})
         ResourceAuthorizer.add_before_filter(self, :authorize_resource, opts)
       end
+    end
+
+    def can?(*args)
+      current_ability.can?(*args)
     end
 
     # Loads the ability of the current user. This method assumes that you have
