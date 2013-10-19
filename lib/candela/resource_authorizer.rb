@@ -61,7 +61,7 @@ module Candela
     end
 
     def action
-      @params[:action].to_sym
+      @controller.action_name.to_sym
     end
 
     def load_resource_for_action_index
