@@ -63,10 +63,10 @@ class AbilityTest < ActiveSupport::TestCase
     assert_not @ability.can? :read, @user
   end
 
-  test "can collection: true lets you call can? on a model class" do
-    @ability.can :index, User, collection: true
+  test "can? works with ActiveRecord::Relation arguments" do
+    @ability.can :index, User
 
-    assert @ability.can? :index, User
+    assert @ability.can? :index, User.all
   end
 
   test "can :update automatically provides can? :edit" do

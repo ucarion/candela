@@ -45,8 +45,8 @@ module Candela
     # The "post" variable that's being passed to the block is the model being
     # accessed. As long as the block returns a truthy value, the permission to
     # perform the described action is granted.
-    def can(action, model, opts = {}, &block)
-      add_rule(cans, action, model, opts, block)
+    def can(action, model, &block)
+      add_rule(cans, action, model, block)
     end
 
     # Explicitly disallows an action to be performed by this Ability. A #cannot
@@ -63,8 +63,8 @@ module Candela
     #
     # Much like #can, this method can accept a block. See the documentation for
     # #can to get an idea of how that works.
-    def cannot(action, model, opts = {}, &block)
-      add_rule(cannots, action, model, opts, block)
+    def cannot(action, model, &block)
+      add_rule(cannots, action, model, block)
     end
 
     def alias_action(*old_actions, new_action)
@@ -73,22 +73,22 @@ module Candela
 
     private
 
-    def add_rule(rule_array, action, model, opts, block)
+    def add_rule(rule_array, action, model, block)
       if action.is_a?(Array)
         action.each do |passed_action|
-          add_rule(rule_array, passed_action, model, opts, block)
+          add_rule(rule_array, passed_action, model, block)
         end
       end
 
-      add_rule_recursively(rule_array, action, model, opts, block)
+      add_rule_recursively(rule_array, action, model, block)
     end
 
-    def add_rule_recursively(rule_array, action, model, opts, block)
-      rule_array << Rule.new(action, model, opts, block)
+    def add_rule_recursively(rule_array, action, model, block)
+      rule_array << Rule.new(action, model, block)
 
       if aliases[action]
         aliases[action].each do |aliased_action|
-          add_rule_recursively(rule_array, aliased_action, model, opts, block)
+          add_rule_recursively(rule_array, aliased_action, model, block)
         end
       end
     end

@@ -7,7 +7,7 @@ class Ability < Candela::Ability
     can :create, User
     can :destroy, User
     can :upcasename, User
-    can :index, User, collection: true
-    can :listall, User, collection: true
+    can :index, User
+    can :listall, User
   end
 end
