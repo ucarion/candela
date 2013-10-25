@@ -12,8 +12,6 @@ Dummy::Application.routes.draw do
       collection do
         get :listall
       end
-
-      resources :posts
     end
   end
 
