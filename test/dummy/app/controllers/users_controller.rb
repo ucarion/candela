@@ -58,6 +58,24 @@ class UsersController < ApplicationController
     redirect_to '/'
   end
 
+  load_resources do
+    before(:show, :edit, :update, :destroy, :upcasename, :unpermitted) do
+      @user = User.find(params[:id])
+    end
+
+    before(:new) do
+      @user = User.new
+    end
+
+    before(:create) do
+      @user = User.new(user_params)
+    end
+
+    before(:index) do
+      @users = User.all
+    end
+  end
+
   private
 
     # Only allow a trusted parameter "white list" through.
